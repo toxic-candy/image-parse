@@ -15,7 +15,9 @@ def getData(request):
     #     convert = base64.b64encode(imagefile.read())
     
     img = Image.open('kat.jpg')
+    response = HttpResponse(content_type='image/jpg')
+    img.save(response, "JPEG")
+      
+          
+    return response
 
-
-    # return Response(convert.decode('utf-8'))
-    return Response(img.show())
