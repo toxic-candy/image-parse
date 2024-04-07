@@ -45,7 +45,7 @@ def rainfall(lat, long, area):
     url = "https://archive-api.open-meteo.com/v1/archive"
     params = {
         "latitude": lat,
-        "longitude": lon,
+        "longitude": long,
         "start_date": start,
         "end_date": end,
         "daily": "rain_sum",
@@ -83,7 +83,7 @@ def rainfall(lat, long, area):
     k=1.02
 
     #get mean temp
-    mean_temperature=temp()
+    mean_temperature=temp(lat, long)
 
     #evaporation loss
     evap_loss=k*(mean_temperature/5)**1.514
@@ -162,14 +162,14 @@ def rainfall(lat, long, area):
     return [harvested, usage_litres, main(usage_litres), saving]
 
 
-def temp():
+def temp(lat, long):
     cache_session = requests_cache.CachedSession('.cache', expire_after = -1)
     retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
     openmeteo = openmeteo_requests.Client(session = retry_session)
     url = "https://archive-api.open-meteo.com/v1/archive"
     params = {
         "latitude": lat,
-        "longitude": lon,
+        "longitude": long,
         "start_date": start,
         "end_date": end,
         "daily": "temperature_2m_mean",
