@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from PIL import Image
 import io
 import base64
+from api.rainwater import rainfall
 
 from api.rooftop_detection import get_solar_data, get_rainwater_data
 import cv2
@@ -29,10 +30,15 @@ def getRainwaterData(request):
 
     rainwater_data = get_rainwater_data(img)
 
+    rain=rainfall(lat,long,rainwater_data["roof_area"])
     # Prepare data to be sent in the response
     data = {
         "area": rainwater_data["roof_area"],
-        "image": convert_mat_to_base64(rainwater_data["threshold_img"])
+        "image": convert_mat_to_base64(rainwater_data["threshold_img"]),
+        'rain_water_harvested':rain[0],
+        'litres_consumed':rain[1],
+        'bill_amount':rain[2],
+        'monthly_saving': rain[3],
     }
 
     return Response(data) 
