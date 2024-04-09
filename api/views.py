@@ -62,3 +62,7 @@ def getSolarData(request):
     }
 
     return Response(data)
+
+@api_view(['GET', 'HEAD'])
+def ping(request):
+    return Response("pong", status=200)
